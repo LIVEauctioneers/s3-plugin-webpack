@@ -5,11 +5,16 @@ import webpack from 'webpack'
 import fs from 'fs'
 import {S3} from '@aws-sdk/client-s3'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
-import s3Opts from './s3_options'
-import S3WebpackPlugin from '../src/s3_plugin'
+import {S3Opts as  s3Opts} from './s3_options.js'
+import {S3Plugin as S3WebpackPlugin} from '../src/s3_plugin.js'
 import {assert} from 'chai'
 import {spawnSync} from 'child_process'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
+
+import {dirname} from 'node:path'
+import {fileURLToPath} from 'node:url'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 const S3_URL = `https://s3.dualstack.${s3Opts.AWS_REGION}.amazonaws.com/${s3Opts.AWS_BUCKET}/`
 const S3_ERROR_REGEX = /<Error>/
@@ -53,7 +58,7 @@ var generateS3Config = function(config) {
   return new S3WebpackPlugin(params)
 }
 
-export default {
+export const testHelpers = {
   OUTPUT_FILE_NAME,
   OUTPUT_PATH,
   S3_URL,

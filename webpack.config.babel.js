@@ -1,6 +1,11 @@
 import path from 'path'
 import {DefinePlugin} from 'webpack'
 
+import { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
 const CONTEXT = path.resolve(__dirname),
       {NODE_ENV} = process.env,
       createPath = nPath => path.resolve(CONTEXT, nPath),
