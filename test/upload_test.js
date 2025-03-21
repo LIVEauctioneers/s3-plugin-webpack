@@ -168,7 +168,7 @@ describe('S3 Webpack Upload', function() {
 
   it('starts a CloudFront invalidation', function() {
     // Skip this test on CI, key does not have permission and we do not use this feature anyways
-    if (process.env.CI) this.sip()
+    if (process.env.CI) this.skip()
     var config,
         randomFile
 
