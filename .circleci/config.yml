@@ -10,7 +10,7 @@ jobs:
             - restore_cache:
                   keys:
                       - nm-{{ .Branch }}-{{ checksum "package-lock.json" }}
-            - run: bun install --frozen-lockfile
+            - run: npm ci
             - save_cache:
                   key: nm-{{ .Branch }}-{{ checksum "package-lock.json" }}
                   paths:
@@ -24,7 +24,7 @@ jobs:
             - checkout
             - restore_cache:
                   keys:
-                      - nm-{{ .Branch }}-{{ checksum "bun.lock" }}
+                      - nm-{{ .Branch }}-{{ checksum "package-lock.json" }}
             - run: npm run test
 
     lint:
@@ -35,7 +35,7 @@ jobs:
             - checkout
             - restore_cache:
                   keys:
-                      - nm-{{ .Branch }}-{{ checksum "bun.lock" }}
+                      - nm-{{ .Branch }}-{{ checksum "package-lock.json" }}
             - run: npm run lint
 
 workflows:
