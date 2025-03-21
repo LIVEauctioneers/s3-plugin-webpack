@@ -2,6 +2,7 @@ src
 test
 .env
 .env.sample
-.travis.yml
+.circleci
+.gitignore
 esbuild.js
 eslint.config.mjs
