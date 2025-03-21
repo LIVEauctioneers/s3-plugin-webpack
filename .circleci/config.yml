@@ -16,7 +16,7 @@ jobs:
                   paths:
                       - node_modules
 
-    test_cover:
+    test:
         docker:
             - image: cimg/node:lts
         working_directory: ~/repo
