@@ -28,7 +28,7 @@ const compileError = (compilation, error) => {
   compilation.errors.push(new Error(error))
 }
 
-export class S3Plugin {
+export default class S3Plugin {
   constructor(options = {}) {
     var {
       include,
