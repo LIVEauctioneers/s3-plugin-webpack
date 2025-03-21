@@ -50,11 +50,9 @@ jobs:
       - run:
           name: Publish
           command: |
-            git config --global user.email "ci@liveauctioneers.com"
-            git config --global user.name "CircleCI"
             npm run lint
             npm run test
-            npm version "$CIRCLE_TAG"
+            npm --no-git-tag-version version "$CIRCLE_TAG"
             npm run build
             echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
             npm publish
