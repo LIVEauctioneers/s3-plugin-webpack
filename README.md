@@ -30,8 +30,8 @@ s3Options: {
 ##### Require `webpack-s3-plugin`
 ```javascript
 // Supports ESM & CJS
-const { S3Plugin } = require('webpack-s3-plugin')
-import { S3Plugin } from '@liveauctioneers/s3-plugin-webpack'
+const S3Plugin = require('webpack-s3-plugin')
+import S3Plugin from '@liveauctioneers/s3-plugin-webpack'
 ```
 
 ##### With exclude
