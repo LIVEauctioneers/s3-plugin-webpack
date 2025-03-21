@@ -18,7 +18,9 @@ const opts = {
   bundle: true,
   platform: 'node',
   target: 'node22',
-  plugins: [nodeExternalsPlugin()],
+  plugins: [nodeExternalsPlugin({
+    allowList: [/mime.*/]
+  })],
 }
 
 const builds = [
