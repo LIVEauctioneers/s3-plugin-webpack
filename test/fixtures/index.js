@@ -1,4 +1,4 @@
-require('./styles.css')
+import './styles.css'
 
 var test = 'Eh',
     pillow = function(a) {

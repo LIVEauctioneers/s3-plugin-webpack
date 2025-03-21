@@ -1,6 +1,8 @@
 src
 test
-webpack.config.babel.js
 .env
 .env.sample
-.travis.yml
+.circleci
+.gitignore
+esbuild.js
+eslint.config.mjs

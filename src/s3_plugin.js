@@ -10,7 +10,7 @@ import {CloudFront} from '@aws-sdk/client-cloudfront'
 import {S3} from '@aws-sdk/client-s3'
 import {Upload} from '@aws-sdk/lib-storage'
 
-import packageJson from '../package.json'
+import packageJson from '../package.json' with { 'type': 'json' }
 
 import {
   addSeperatorToPath,
@@ -22,7 +22,7 @@ import {
   REQUIRED_S3_UP_OPTS,
   PATH_SEP,
   DEFAULT_TRANSFORM,
-} from './helpers'
+} from './helpers.js'
 
 http.globalAgent.maxSockets = https.globalAgent.maxSockets = 50
 
@@ -30,7 +30,7 @@ const compileError = (compilation, error) => {
   compilation.errors.push(new Error(error))
 }
 
-module.exports = class S3Plugin {
+export default class S3Plugin {
   constructor(options = {}) {
     var {
       include,

@@ -29,7 +29,9 @@ s3Options: {
 
 ##### Require `webpack-s3-plugin`
 ```javascript
-var S3Plugin = require('webpack-s3-plugin')
+// Supports ESM & CJS
+const S3Plugin = require('webpack-s3-plugin')
+import S3Plugin from 'webpack-s3-plugin'
 ```
 
 ##### With exclude
