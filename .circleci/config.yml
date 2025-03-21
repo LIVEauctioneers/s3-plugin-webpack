@@ -38,6 +38,21 @@ jobs:
                       - nm-{{ .Branch }}-{{ checksum "package-lock.json" }}
             - run: npm run lint
 
+    publish:
+        docker:
+            - image: cimg/node:lts
+        working_directory: ~/repo
+        steps:
+            - checkout
+            - restore_cache:
+                  keys:
+                      - nm-{{ .Branch }}-{{ checksum "package-lock.json" }}
+            - run:
+                name: Publish
+                command: |
+                    npm run build
+                    npm publish
+
 workflows:
     version: 2
     build_and_publish:
@@ -53,3 +68,12 @@ workflows:
             - lint:
                   requires:
                       - install
+
+            - publish:
+                requires:
+                    - install
+                    - test
+                    - lint
+                filters:
+                    tags:
+                        only: /.+/
