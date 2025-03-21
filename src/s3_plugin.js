@@ -10,8 +10,6 @@ import {CloudFront} from '@aws-sdk/client-cloudfront'
 import {S3} from '@aws-sdk/client-s3'
 import {Upload} from '@aws-sdk/lib-storage'
 
-import packageJson from '../package.json' with { type: 'json' }
-
 import {
   addSeperatorToPath,
   addTrailingS3Sep,
@@ -95,7 +93,7 @@ export class S3Plugin {
       '.'
 
     compiler.hooks.done.tapPromise(
-      packageJson.name,
+      'webpack-s3-plugin',
       async({compilation}) => {
         let error
 

@@ -1,10 +1,10 @@
 import path from 'path'
-import {DefinePlugin} from 'webpack'
+import {default as webpack} from 'webpack'
 
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import {dirname} from 'node:path'
+import {fileURLToPath} from 'node:url'
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 const CONTEXT = path.resolve(__dirname),
       {NODE_ENV} = process.env,
@@ -25,7 +25,7 @@ var config = {
   },
 
   plugins: [
-    new DefinePlugin({
+    new webpack.DefinePlugin({
       __DEV__: NODE_ENV === 'development' || NODE_ENV === 'test'
     })
   ],
@@ -58,4 +58,4 @@ var config = {
   ]
 }
 
-module.exports = config
+export default config
