@@ -4,6 +4,8 @@ import webpack from 'webpack'
 import {dirname} from 'node:path'
 import {fileURLToPath} from 'node:url'
 
+import ESLintPlugin from 'eslint-webpack-plugin'
+
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
 const CONTEXT = path.resolve(__dirname),
@@ -25,6 +27,7 @@ var config = {
   },
 
   plugins: [
+    new ESLintPlugin(options),
     new webpack.DefinePlugin({
       __DEV__: NODE_ENV === 'development' || NODE_ENV === 'test'
     })
@@ -35,7 +38,6 @@ var config = {
       {
         enforce: 'pre',
         test: /\.js/,
-        loader: 'eslint-loader',
         include: [SRC_PATH],
         exclude: [NODE_MODULES]
       },
