@@ -50,6 +50,8 @@ jobs:
       - run:
           name: Publish
           command: |
+            npm run lint
+            npm run test
             npm version "$CIRCLE_TAG"
             npm run build
             npm publish
@@ -71,10 +73,7 @@ workflows:
             - install
 
       - publish:
-          requires:
-            - install
-            - test
-            - lint
+          context: la_build_vars
           filters:
             branches:
               ignore: /.*/
