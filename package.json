@@ -8,7 +8,7 @@
   "scripts": {
     "build": "node esbuild.js",
     "prepublishOnly": "npm run lint && npm run build",
-    "test": "NODE_ENV='test' mocha -t 10000 --require @babel/register",
+    "test": "NODE_ENV='test' mocha -t 10000",
     "lint": "eslint ./src ./test ./esbuild.js ./eslint.config.mjs",
     "lint-fix": "npm run lint -- --fix",
     "watch": "webpack --watch --mode development"
