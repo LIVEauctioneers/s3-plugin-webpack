@@ -18,19 +18,21 @@ const opts = {
   bundle: true,
   platform: 'node',
   target: 'node22',
-  plugins: [nodeExternalsPlugin({
-    allowList: [/mime.*/]
-  })],
 }
 
 const builds = [
   {
     outfile: 'dist/s3_plugin.cjs',
     format: 'cjs',
+    plugins: [nodeExternalsPlugin({
+      // mime module is ESM only so we need to include it for CJS bundle to work
+      allowList: [/mime.*/]
+    })],
   },
   {
     outfile: 'dist/s3_plugin.mjs',
     format: 'esm',
+    plugins: [nodeExternalsPlugin()],
   }
 ]
 
