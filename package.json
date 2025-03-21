@@ -46,6 +46,7 @@
     "esbuild-node-externals": "~1.18.0",
     "eslint": "^9.23.0",
     "file-loader": "^6.2.0",
+    "globals": "~16.0.0",
     "html-webpack-plugin": "^5.6.3",
     "mini-css-extract-plugin": "^2.9.2",
     "mocha": "^11.1.0",
