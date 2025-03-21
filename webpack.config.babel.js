@@ -1,5 +1,5 @@
 import path from 'path'
-import {default as webpack} from 'webpack'
+import webpack from 'webpack'
 
 import {dirname} from 'node:path'
 import {fileURLToPath} from 'node:url'

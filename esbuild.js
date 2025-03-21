@@ -1,4 +1,4 @@
-import {default as esbuild} from 'esbuild'
+import esbuild from 'esbuild'
 import {nodeExternalsPlugin} from 'esbuild-node-externals'
 import {rm} from 'fs/promises'
 

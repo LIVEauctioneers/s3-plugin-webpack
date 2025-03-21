@@ -4,7 +4,7 @@
   "description": "Uploads compiled assets to s3 after build",
   "main": "dist/s3_plugin.cjs",
   "module": "dist/s3_plugin.mjs",
-  "type": "commonjs",
+  "type": "module",
   "scripts": {
     "build": "node esbuild.js",
     "prepublishOnly": "npm run lint && npm run build",
