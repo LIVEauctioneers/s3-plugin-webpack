@@ -1,14 +1,13 @@
 import _ from 'lodash'
 import path from 'path'
-import {S3Opts} from './s3_options.js'
-import {testHelpers} from './upload_test_helpers.js'
+import S3Opts from './s3_options.js'
+import testHelpers from './upload_test_helpers.js'
 import {assert} from 'chai'
 import * as sinon from 'sinon'
 
-import {dirname} from 'node:path'
 import {fileURLToPath} from 'node:url'
 
-const __dirname = dirname(fileURLToPath(import.meta.url))
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const CONTEXT = __dirname
 

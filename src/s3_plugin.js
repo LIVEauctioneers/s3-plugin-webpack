@@ -1,7 +1,7 @@
 import http from 'http'
 import https from 'https'
-import fs from 'fs'
-import path from 'path'
+import {readFile, writeFile, createReadStream} from 'fs'
+import {resolve as pathResolve} from 'path'
 import ProgressBar from 'progress'
 import cdnizer from 'cdnizer'
 import _ from 'lodash'
@@ -138,7 +138,7 @@ export default class S3Plugin {
   addPathToFiles(files, fPath) {
     return files.map((file) => ({
       name: file,
-      path: path.resolve(fPath, file),
+      path: pathResolve(fPath, file),
     }))
   }
 
@@ -159,10 +159,10 @@ export default class S3Plugin {
 
   cdnizeHtml(file) {
     return new Promise((resolve, reject) => {
-      fs.readFile(file.path, (err, data) => {
+      readFile(file.path, (err, data) => {
         if (err) return reject(err)
 
-        fs.writeFile(file.path, this.cdnizer(data.toString()), (err) => {
+        writeFile(file.path, this.cdnizer(data.toString()), (err) => {
           if (err) return reject(err)
 
           resolve(file)
@@ -314,7 +314,7 @@ export default class S3Plugin {
     if (s3Params.ContentType === undefined)
       s3Params.ContentType = mime.getType(fileName)
 
-    const Body = fs.createReadStream(file)
+    const Body = createReadStream(file)
     const params = _.merge({Key, Body}, DEFAULT_UPLOAD_OPTIONS, s3Params)
 
     const upload = new Upload({client: this.client, params})
