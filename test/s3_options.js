@@ -10,7 +10,7 @@ const {
   CLOUDFRONT_DISTRIBUTION_ID,
 } = process.env
 
-export const S3Opts = {
+const S3Opts = {
   AWS_BUCKET,
   AWS_REGION,
   AWS_ACCESS_KEY,
@@ -32,3 +32,5 @@ export const S3Opts = {
     Items: ['/*'],
   },
 }
+
+export default S3Opts

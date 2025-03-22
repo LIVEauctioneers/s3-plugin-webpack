@@ -1,7 +1,7 @@
-import http from 'http'
-import https from 'https'
-import fs from 'fs'
-import path from 'path'
+import http from 'node:http'
+import https from 'node:https'
+import {readFile, writeFile, createReadStream} from 'node:fs'
+import {resolve as pathResolve} from 'node:path'
 import ProgressBar from 'progress'
 import cdnizer from 'cdnizer'
 import _ from 'lodash'
@@ -62,7 +62,7 @@ export default class S3Plugin {
       basePath,
       priority,
       htmlFiles: typeof htmlFiles === 'string' ? [htmlFiles] : htmlFiles,
-      progress: _.isBoolean(progress) ? progress : true,
+      progress: typeof progress === 'boolean' ? progress : true,
     }
 
     this.clientConfig = {
@@ -80,8 +80,7 @@ export default class S3Plugin {
     this.connect()
 
     const isDirectoryUpload = !!this.options.directory,
-          hasRequiredUploadOpts = _.every(
-            REQUIRED_S3_UP_OPTS,
+          hasRequiredUploadOpts = REQUIRED_S3_UP_OPTS.every(
             (type) => this.uploadOptions[type]
           )
 
@@ -138,31 +137,35 @@ export default class S3Plugin {
   addPathToFiles(files, fPath) {
     return files.map((file) => ({
       name: file,
-      path: path.resolve(fPath, file),
+      path: pathResolve(fPath, file),
     }))
   }
 
   getFileName(file = '') {
-    if (_.includes(file, PATH_SEP))
-      return file.substring(_.lastIndexOf(file, PATH_SEP) + 1)
+    if (file.includes(PATH_SEP))
+      return file.substring(file.lastIndexOf(PATH_SEP) + 1)
     else return file
   }
 
   getAssetFiles({assets, outputOptions}) {
-    const files = _.map(assets, (value, name) => ({
-      name,
-      path: `${outputOptions.path}/${name}`,
-    }))
+    const files = []
+
+    for (const asset in assets) {
+      files.push({
+        name: asset,
+        path: `${outputOptions.path}/${asset}`,
+      })
+    }
 
     return Promise.resolve(files)
   }
 
   cdnizeHtml(file) {
     return new Promise((resolve, reject) => {
-      fs.readFile(file.path, (err, data) => {
+      readFile(file.path, (err, data) => {
         if (err) return reject(err)
 
-        fs.writeFile(file.path, this.cdnizer(data.toString()), (err) => {
+        writeFile(file.path, this.cdnizer(data.toString()), (err) => {
           if (err) return reject(err)
 
           resolve(file)
@@ -305,7 +308,7 @@ export default class S3Plugin {
   uploadFile(fileName, file) {
     let Key = this.options.basePath + fileName
     const s3Params = _.mapValues(this.uploadOptions, (optionConfig) => {
-      return _.isFunction(optionConfig) ? optionConfig(fileName, file) : optionConfig
+      return optionConfig instanceof Function ? optionConfig(fileName, file) : optionConfig
     })
 
     // avoid noname folders in bucket
@@ -314,7 +317,7 @@ export default class S3Plugin {
     if (s3Params.ContentType === undefined)
       s3Params.ContentType = mime.getType(fileName)
 
-    const Body = fs.createReadStream(file)
+    const Body = createReadStream(file)
     const params = _.merge({Key, Body}, DEFAULT_UPLOAD_OPTIONS, s3Params)
 
     const upload = new Upload({client: this.client, params})
@@ -339,7 +342,7 @@ export default class S3Plugin {
         sessionToken,
       })
 
-      if (!_.isArray(cloudfrontInvalidateOptions.DistributionId))
+      if (!Array.isArray(cloudfrontInvalidateOptions.DistributionId))
         cloudfrontInvalidateOptions.DistributionId = [
           cloudfrontInvalidateOptions.DistributionId
         ]

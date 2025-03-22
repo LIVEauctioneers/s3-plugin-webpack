@@ -1,20 +1,19 @@
 import _ from 'lodash'
-import https from 'https'
-import path from 'path'
+import https from 'node:https'
+import path from 'node:path'
 import webpack from 'webpack'
-import fs from 'fs'
+import fs from 'node:fs'
 import {S3} from '@aws-sdk/client-s3'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
-import {S3Opts as  s3Opts} from './s3_options.js'
+import {default as  s3Opts} from './s3_options.js'
 import {default as S3WebpackPlugin} from '../src/s3_plugin.js'
 import {assert} from 'chai'
-import {spawnSync} from 'child_process'
+import {spawnSync} from 'node:child_process'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 
-import {dirname} from 'node:path'
 import {fileURLToPath} from 'node:url'
 
-const __dirname = dirname(fileURLToPath(import.meta.url))
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const S3_URL = `https://s3.dualstack.${s3Opts.AWS_REGION}.amazonaws.com/${s3Opts.AWS_BUCKET}/`
 const S3_ERROR_REGEX = /<Error>/
@@ -58,7 +57,7 @@ var generateS3Config = function(config) {
   return new S3WebpackPlugin(params)
 }
 
-export const testHelpers = {
+const testHelpers = {
   OUTPUT_FILE_NAME,
   OUTPUT_PATH,
   S3_URL,
@@ -268,3 +267,5 @@ export const testHelpers = {
     })
   },
 }
+
+export default testHelpers

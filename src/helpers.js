@@ -1,6 +1,6 @@
-import _ from 'lodash'
-import path from 'path'
+import {sep as pathSep} from 'node:path'
 import readDir from 'recursive-readdir'
+import {isRegExp} from 'node:util/types'
 
 export const UPLOAD_IGNORES = [
   '.DS_Store'
@@ -10,9 +10,8 @@ export const DEFAULT_UPLOAD_OPTIONS = {
   ACL: 'public-read'
 }
 
-
 export const REQUIRED_S3_UP_OPTS = ['Bucket']
-export const PATH_SEP = path.sep
+export const PATH_SEP = pathSep
 export const S3_PATH_SEP = '/'
 export const DEFAULT_TRANSFORM = (item) => Promise.resolve(item)
 
@@ -24,12 +23,12 @@ export const addSeperatorToPath = (fPath) => {
   if (!fPath)
     return fPath
 
-  return _.endsWith(fPath, PATH_SEP) ? fPath : fPath + PATH_SEP
+  return fPath.endsWith(PATH_SEP) ? fPath : fPath + PATH_SEP
 }
 
 export const translatePathFromFiles = (rootPath) => {
   return files => {
-    return _.map(files, file => {
+    return files.map(file => {
       return {
         path: file,
         name: file
@@ -49,13 +48,13 @@ export const getDirectoryFilesRecursive = (dir, ignores = []) => {
 }
 
 export const testRule = (rule, subject) => {
-  if (_.isRegExp(rule)) {
+  if (isRegExp(rule)) {
     return rule.test(subject)
-  } else if (_.isFunction(rule)) {
+  } else if (rule instanceof Function) {
     return !!rule(subject)
-  } else if (_.isArray(rule)) {
-    return _.every(rule, (condition) => testRule(condition, subject))
-  } else if (_.isString(rule)) {
+  } else if (Array.isArray(rule)) {
+    return rule.every((condition) => testRule(condition, subject))
+  } else if (rule instanceof String) {
     return new RegExp(rule).test(subject)
   } else {
     throw new Error('Invalid include / exclude rule')
