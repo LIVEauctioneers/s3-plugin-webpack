@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import path from 'path'
+import path from 'node:path'
 import S3Opts from './s3_options.js'
 import testHelpers from './upload_test_helpers.js'
 import {assert} from 'chai'

@@ -1,7 +1,7 @@
-import http from 'http'
-import https from 'https'
-import {readFile, writeFile, createReadStream} from 'fs'
-import {resolve as pathResolve} from 'path'
+import http from 'node:http'
+import https from 'node:https'
+import {readFile, writeFile, createReadStream} from 'node:fs'
+import {resolve as pathResolve} from 'node:path'
 import ProgressBar from 'progress'
 import cdnizer from 'cdnizer'
 import _ from 'lodash'
@@ -62,7 +62,7 @@ export default class S3Plugin {
       basePath,
       priority,
       htmlFiles: typeof htmlFiles === 'string' ? [htmlFiles] : htmlFiles,
-      progress: _.isBoolean(progress) ? progress : true,
+      progress: typeof progress === 'boolean' ? progress : true,
     }
 
     this.clientConfig = {
@@ -80,8 +80,7 @@ export default class S3Plugin {
     this.connect()
 
     const isDirectoryUpload = !!this.options.directory,
-          hasRequiredUploadOpts = _.every(
-            REQUIRED_S3_UP_OPTS,
+          hasRequiredUploadOpts = REQUIRED_S3_UP_OPTS.every(
             (type) => this.uploadOptions[type]
           )
 
@@ -143,16 +142,20 @@ export default class S3Plugin {
   }
 
   getFileName(file = '') {
-    if (_.includes(file, PATH_SEP))
-      return file.substring(_.lastIndexOf(file, PATH_SEP) + 1)
+    if (file.includes(PATH_SEP))
+      return file.substring(file.lastIndexOf(PATH_SEP) + 1)
     else return file
   }
 
   getAssetFiles({assets, outputOptions}) {
-    const files = _.map(assets, (value, name) => ({
-      name,
-      path: `${outputOptions.path}/${name}`,
-    }))
+    const files = []
+
+    for (const asset in assets) {
+      files.push({
+        name: asset,
+        path: `${outputOptions.path}/${asset}`,
+      })
+    }
 
     return Promise.resolve(files)
   }
@@ -305,7 +308,7 @@ export default class S3Plugin {
   uploadFile(fileName, file) {
     let Key = this.options.basePath + fileName
     const s3Params = _.mapValues(this.uploadOptions, (optionConfig) => {
-      return _.isFunction(optionConfig) ? optionConfig(fileName, file) : optionConfig
+      return optionConfig instanceof Function ? optionConfig(fileName, file) : optionConfig
     })
 
     // avoid noname folders in bucket
@@ -339,7 +342,7 @@ export default class S3Plugin {
         sessionToken,
       })
 
-      if (!_.isArray(cloudfrontInvalidateOptions.DistributionId))
+      if (!Array.isArray(cloudfrontInvalidateOptions.DistributionId))
         cloudfrontInvalidateOptions.DistributionId = [
           cloudfrontInvalidateOptions.DistributionId
         ]
